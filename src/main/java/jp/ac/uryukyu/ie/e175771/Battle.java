@@ -14,7 +14,7 @@ public class Battle {
      * プレイヤーの入力した座標を取得するためのメソッド。
      */
     public void get_user_input(){
-        System.out.println("置きたいマスの座標を入力してください。：x-y");
+        System.out.println("置きたいマスの座標をxかyで入力してください⬇︎");
         Scanner user_input = new Scanner(System.in);
         String str = user_input.nextLine();
         String[] str_list = str.split("-");

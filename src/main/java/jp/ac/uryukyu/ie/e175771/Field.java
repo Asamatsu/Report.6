@@ -1,6 +1,8 @@
 package jp.ac.uryukyu.ie.e175771;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 public class Field {
     private List<Stone> Stone_list;
     private String[][] board;
@@ -21,10 +23,10 @@ public class Field {
                 getStone(x, y).setColor("E");
             }
         }
-        changeStoneColor(4, 4, "B");
-        changeStoneColor(5, 5, "B");
-        changeStoneColor(5, 4, "W");
-        changeStoneColor(4, 5, "W");
+        changeStoneColor(4,4,"●");
+        changeStoneColor(5,5, "●");
+        changeStoneColor(5, 4, "○");
+        changeStoneColor(4, 5, "○");
     }
 
     /**
@@ -80,21 +82,6 @@ public class Field {
     }
 
     /**
-     * 引数で与えた色と反対の色を返すメソッド。
-     * "W"なら"B"を、"B"なら"W"を返す。
-     *
-     * @param color 色
-     * @return 引数で与えた色と反対の色。
-     */
-    public String denyColor(String color) {
-        if (color == "W") {
-            return "B";
-        } else {
-            return "W";
-        }
-    }
-
-    /**
      * ある方向において、その方向にひっくり返すことができる石があるかどうか判定するメソッド。
      *
      * @param x     置きたいマスのx座標。
@@ -105,7 +92,7 @@ public class Field {
      * @return 調べた方向の中でひっくり返せる石の数。
      */
     public int judgeReverse(int x, int y, int vectX, int vectY, String color){
-        int numReverseStone = 1;
+        int numReverseStone = 0;
         x += vectX;
         y += vectY;
         while(getStone(x, y).getColor() != color){
@@ -138,7 +125,9 @@ public class Field {
         int numCanReverseLine = 0;
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if (judgeReverse(input.x, input.y, j, i, color) == 0) {
+                if(i == 0 && j == 0){
+                    continue;
+                }else if(judgeReverse(input.x, input.y, j, i, color) == 0) {
                     continue;
                 } else {
                     changeStoneColor(input.x, input.y, color);
@@ -154,4 +143,42 @@ public class Field {
             turnStone(color);
         }
     }
+    public void cpuTurnStone(String color){
+        List<Stone> cansReverseStoneList = new ArrayList<Stone>();
+        for(int y = 1; y < 9; y++){
+            for(int x = 1; x < 9; x++){
+                if(getStone(x, y).getColor() == "E"){
+                    int numCanReverseLine = 0;
+                    for(int i = -1; i <= 1; i++){
+                        for(int j = -1; j <= 1; j++){
+                            if(i == 0 && j == 0){
+                                continue;
+                            }else if(judgeReverse(x, y, j, i, color) == 0) {
+                                continue;
+                            }else{
+                                numCanReverseLine++;
+                            }
+                        }
+                    }
+                    if(numCanReverseLine != 0){
+                        cansReverseStoneList.add(getStone(x, y));
+                    }
+                }
+            }
+        }
+        Random rand = new Random();
+        int index = rand.nextInt(cansReverseStoneList.size());
+        Stone stone = cansReverseStoneList.get(index);
+        int xnum = stone.getPosition()[0];
+        int ynum = stone.getPosition()[1];
+        changeStoneColor(xnum, ynum, color);
+        for(int i = -1; i <= 1; i++){
+            for(int j = -1; j <= 1; j++){
+                for(int k = 1; k <= judgeReverse(xnum, ynum, j, i, color); k++){
+                    changeStoneColor(xnum + j * k, ynum + i * k, color);
+                }
+            }
+        }
+    }
+
 }
