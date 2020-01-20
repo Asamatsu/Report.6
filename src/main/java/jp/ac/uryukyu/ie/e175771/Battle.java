@@ -15,7 +15,7 @@ public class Battle {
      */
     public void get_user_input(){
         try {
-            System.out.println("置きたいマスの座標を入力してください。：x-y");
+            System.out.println("置きたいマスの座標を「x-y」で入力してください⬇︎");
             Scanner user_input = new Scanner(System.in);
             String str = user_input.nextLine();
             //"-"で区切る

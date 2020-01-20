@@ -1,9 +1,9 @@
 package jp.ac.uryukyu.ie.e175771;
 
+
 public class Main {
     public static void main(String args[]){
         Field field = new Field();
-
         while(true){
             if(field.judgeExistCanReverseStone("○").size() != 0){
                 field.turnStone("○");
@@ -19,6 +19,7 @@ public class Main {
             }
 
         }
+        field.judgeWinner();
     }
 
 }

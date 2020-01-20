@@ -1,4 +1,5 @@
 package jp.ac.uryukyu.ie.e175771;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,19 +11,20 @@ public class Field {
     /**
      * コンストラクタ。Stoneを入れた１０×１０の配列を作成する。
      */
-    public Field() {
+    public Field(){
         this.Stone_list = new ArrayList<>();
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
+        for(int y = 0; y < 10; y++){
+            for(int x = 0; x < 10; x++){
                 Stone stone = new Stone(x, y);
                 this.Stone_list.add(stone);
             }
         }
-        for (int y = 1; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
-                getStone(x, y).setColor("E");
+        for(int y = 1; y < 9; y++){
+            for(int x = 0; x < 9; x++){
+                getStone(x, y).setColor("□");
             }
         }
+        //初期盤面の4コマを置く
         changeStoneColor(4,4,"●");
         changeStoneColor(5,5, "●");
         changeStoneColor(5, 4, "○");
@@ -30,17 +32,15 @@ public class Field {
     }
 
     /**
-     * 石を取得するためのメソッド
      * 石を取得するためのメソッド。
-     *
-     * @param x 　x座標
-     * @param y 　y座標
+     * @param x　x座標
+     * @param y　y座標
      * @return stone
      */
-    public Stone getStone(int x, int y) {
-        for (Stone stone : this.Stone_list) {
+    public Stone getStone(int x, int y){
+        for(Stone stone : this.Stone_list){
             int pos[] = stone.getPosition();
-            if (pos[0] == x && pos[1] == y) {
+            if(pos[0] == x && pos[1] == y){
                 return stone;
             }
         }
@@ -48,32 +48,30 @@ public class Field {
     }
 
     /**
-     * 石の色を変えるためのメソッド
-     *
-     * @param x     　x座標
-     * @param y     　y座標
+     * 石の色を変えるためのメソッド。
+     * @param x　x座標
+     * @param y　y座標
      * @param color 変えたい色
      */
-    public void changeStoneColor(int x, int y, String color) {
+    public void changeStoneColor(int x, int y, String color){
         Stone stone = this.getStone(x, y);
         stone.setColor(color);
     }
 
     /**
-     * 盤面を出力するためのメソッド
+     * 盤面を出力するためのメソッド。
      */
-    public void printBoard() {
+    public void printBoard(){
         board = new String[10][10];
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
+        for(int y = 0; y < 10; y++){
+            for(int x = 0; x < 10; x++){
                 board[y][x] = this.getStone(x, y).getColor();
             }
         }
-
         System.out.println("    1   2   3   4   5   6   7   8  x");
-        for (int y = 1; y <= 8; y++) {
+        for(int y = 1; y <= 8; y++){
             System.out.print(y);
-            for (int x = 1; x <= 8; x++) {
+            for(int x = 1; x <= 8; x++){
                 System.out.printf("%4s", board[y][x]);
             }
             System.out.printf("\n\n");
@@ -82,10 +80,9 @@ public class Field {
     }
 
     /**
-     * ある方向において、その方向にひっくり返すことができる石があるかどうか判定するメソッド。
-     *
-     * @param x     置きたいマスのx座標。
-     * @param y     置きたいマスのy座標。
+     *ある方向において、その方向にひっくり返すことができる石があるかどうか判定するメソッド。
+     * @param x 置きたいマスのx座標。
+     * @param y 置きたいマスのy座標。
      * @param vectX 調べたい方向のx成分。
      * @param vectY 調べたい方向のy成分。
      * @param color 自分の色。
@@ -96,7 +93,7 @@ public class Field {
         x += vectX;
         y += vectY;
         while(getStone(x, y).getColor() != color){
-            if(getStone(x, y).getColor() == "E"){
+            if(getStone(x, y).getColor() == "□"){
                 return 0;
             }else if(getStone(x, y).getColor() == null){
                 return 0;
@@ -111,39 +108,44 @@ public class Field {
     /**
      * judgeReverseメソッドを使って、プレイヤーの指定した座標に石が置けるか判定し、
      * 返すことができる石を実際に返すメソッド。
-     *
      * @param color 自分の色。
      */
-    public void turnStone(String color) {
+    public void turnStone(String color){
         printBoard();
         System.out.println("あなたの色は" + color + "です。");
         Battle input = new Battle();
         //指定したマスの色が"E"かどうか。
-        if (getStone(input.x, input.y).getColor() != "E") {
+        if(getStone(input.x, input.y).getColor() != "□"){
             System.out.println("このマスには石を置けません。");
             turnStone(color);
         }
         int numCanReverseLine = 0;
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
+        for(int i = -1; i <= 1; i++){
+            for(int j = -1; j <= 1; j++){
                 if(i == 0 && j == 0){
                     continue;
                 }else if(judgeReverse(input.x, input.y, j, i, color) == 0) {
                     continue;
-                } else {
+                }else{
                     changeStoneColor(input.x, input.y, color);
-                    for (int k = 1; k <= judgeReverse(input.x, input.y, j, i, color); k++) {
+                    for(int k = 1; k <= judgeReverse(input.x, input.y, j, i, color); k++){
                         changeStoneColor(input.x + j * k, input.y + i * k, color);
                     }
                     numCanReverseLine++;
                 }
             }
         }
-        if (numCanReverseLine == 0) {
+        if(numCanReverseLine == 0){
             System.out.println("このマスには石を置けません。");
             turnStone(color);
         }
     }
+
+    /**
+     * turnStoneのCPU版。
+     * 石が置けるマスをリストに入れ、そのなかからランダムにマスを選ぶ。
+     * @param color　自分の色
+     */
     public void cpuTurnStone(String color){
         List<Stone> list = judgeExistCanReverseStone(color);
         Random rand = new Random();
@@ -161,6 +163,9 @@ public class Field {
         }
     }
 
+    /**
+     * 勝敗を判定するメソッド。
+     */
     public void judgeWinner(){
         int numBlackStone = 0;
         int numWhiteStone = 0;
@@ -184,11 +189,16 @@ public class Field {
         }
     }
 
+    /**
+     * 石が置けるマスのリストを作るメソッド。
+     * @param color　自分の色
+     * @return 置けるマスが入ったリスト
+     */
     public List<Stone> judgeExistCanReverseStone(String color){
         List<Stone> cansReverseStoneList = new ArrayList<Stone>();
         for(int y = 1; y < 9; y++){
             for(int x = 1; x < 9; x++){
-                if(getStone(x, y).getColor() == "E"){
+                if(getStone(x, y).getColor() == "□"){
                     int numCanReverseLine = 0;
                     for(int i = -1; i <= 1; i++){
                         for(int j = -1; j <= 1; j++){
