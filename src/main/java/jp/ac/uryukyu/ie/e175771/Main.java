@@ -5,10 +5,8 @@ public class Main {
 
         Field field = new Field();
 
-        field.change_stone_color(4, 4, "B");
-        field.change_stone_color(5, 5, "B");
-        field.change_stone_color(5, 4, "W");
-        field.change_stone_color(4, 5, "W");
-        field.print_board();
+        while(true){
+            field.turnStone("B");
+        }
     }
 }
