@@ -1,10 +1,8 @@
 package jp.ac.uryukyu.ie.e175771;
 public class Stone {
-
     private int x;
     private int y;
     private String color;//B:黒, W:白, E:空
-
     /**
      * コンストラクタ。石の座標と色(空を表す"E")を指定する。
      * @param x　x座標
@@ -13,7 +11,7 @@ public class Stone {
     public Stone(int x, int y){
         this.x = x;
         this.y = y;
-        color = "E";
+        color = null;
     }
     /**
      * 石の色を指定するメソッド
@@ -29,6 +27,10 @@ public class Stone {
     public String getColor(){
         return color;
     }
+    /**
+     * 石があるマスの座標を返すメソッド。
+     * @return 石があるマスの座標。
+     */
 
     public int[] getPosition(){
         int pos[] = {this.x, this.y};

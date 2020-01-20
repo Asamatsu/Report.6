@@ -2,7 +2,7 @@ package jp.ac.uryukyu.ie.e175771;
 
 import java.util.Scanner;
 
-public class  Battle{
+public class Battle {
     public int x;
     public int y;
 
